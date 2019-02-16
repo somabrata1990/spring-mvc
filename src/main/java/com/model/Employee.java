@@ -2,19 +2,31 @@ package com.model;
 
 import org.springframework.stereotype.Component;
 
-@Component
 public class Employee {
-//    Employee(){
-//        this.id = "123";
-//        this.fname= "test";
-//        this.lname = "test1";
-//    }
-    private String id = "123";
-    private String fname = "som";
-    private String lname = "test";
+    public String id;
+    public String fname;
+    public String lname;
 
-    @Override
-    public String toString(){
-        return "id:-" + id + " fname:- " + fname + " lname:- " + lname;
+    public Employee() {
+
     }
+
+    public Employee(String id, String fname, String lname){
+        this.id = id;
+        this.fname= fname;
+        this.lname = lname;
+    }
+
+    public String getId(){ return this.id; }
+    public String getFname(){
+        return this.fname;
+    }
+    public String getLname(){
+        return this.lname;
+    }
+
+    public void setId(String id) { this.id = id; }
+    public void setFname(String fname) { this.fname = fname; }
+    public void setLname(String lname) { this.lname = lname; }
+
 }
