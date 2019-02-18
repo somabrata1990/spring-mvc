@@ -1,6 +1,12 @@
 package com.dao;
 
 import com.model.Employee;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -12,16 +18,20 @@ public class EmployeeDao {
 
     private ArrayList<Employee> employeeList = new ArrayList<>();
 
+    private SessionFactory sessionFactory;
+
     public EmployeeDao(){
         try {
-            employeeList.add(new Employee("1", "som", "test"));
-            employeeList.add(new Employee("2", "som1", "test1"));
-            employeeList.add(new Employee("3", "som2", "test2"));
-            employeeList.add(new Employee("4", "som3", "test3"));
-            employeeList.add(new Employee("5", "som4", "test4"));
-            employeeList.add(new Employee("6", "som5", "test5"));
+            Configuration configuration = new Configuration();
+            configuration.configure("hibernate.cfg.xml").addAnnotatedClass(Employee.class);
+            System.out.println("Hibernate Annotation Configuration loaded");
+
+            ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
+            System.out.println("Hibernate Annotation serviceRegistry created");
+
+            this.sessionFactory = configuration.buildSessionFactory(serviceRegistry);
         } catch (Exception e) {
-            System.out.println(e.getStackTrace());
+            e.printStackTrace();
         }
     }
 
@@ -30,7 +40,18 @@ public class EmployeeDao {
         return filteredList.get(0);
     }
 
-    public ArrayList<Employee> getAll() {return employeeList;}
+    public ArrayList<Employee> getAll() {
+        try{
+            Session session = sessionFactory.openSession();
+            Transaction tx = session.beginTransaction();
+            List<Employee> employeeList = session.createQuery("FROM Employee").list();
+            tx.commit();
+            session.close();
+            return (ArrayList<Employee>) employeeList;
+        } catch(Exception e) {
+            return new ArrayList<Employee>();
+        }
+    }
 
     public boolean add(Employee emp) {
         return employeeList.add(emp);
