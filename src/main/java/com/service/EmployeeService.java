@@ -17,19 +17,15 @@ public class EmployeeService {
         return empDao.getAll();
     }
 
-    public Employee getEmployeeById(String id){
+    public Employee getEmployeeById(int id){
         return empDao.getById(id);
-    }
-
-    public boolean updateEmployeeById(String id, Employee emp) {
-        return empDao.updateById(id, emp);
     }
 
     public boolean addEmployee(Employee emp) {
         return empDao.add(emp);
     }
 
-    public boolean deleteEmployee(String id){
+    public boolean deleteEmployee(int id){
         return empDao.delete(id);
     }
 }

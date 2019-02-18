@@ -8,9 +8,8 @@ import java.util.Date;
 public class Employee {
 
     @Column(name = "emp_no")
-    @GeneratedValue
     @Id
-    public String id;
+    public int id;
 
     @Column(name = "first_name")
     public String fname;
@@ -30,7 +29,7 @@ public class Employee {
     public Employee() {}
 
     public Employee(
-            String id,
+            int id,
             String fname,
             String lname,
             Date birtDate,
@@ -45,18 +44,18 @@ public class Employee {
         this.gender = gender;
     }
 
-    public String getId(){ return this.id; }
+    public int getId(){ return this.id; }
     public String getFname(){
         return this.fname;
     }
     public String getLname(){
         return this.lname;
     }
-    public Date getBirthDate() { return this.birthDate; }
+    public String getBirthDate() { return this.birthDate.toString(); }
     public Date getHireDate() { return this.hireDate; }
     public String getGender() { return this.gender; }
 
-    public void setId(String id) { this.id = id; }
+    public void setId(int id) { this.id = id; }
     public void setFname(String fname) { this.fname = fname; }
     public void setLname(String lname) { this.lname = lname; }
     public void setBirthDate(Date birthDate) { this.birthDate = birthDate; }

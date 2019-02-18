@@ -18,7 +18,7 @@ public class EmployeeController {
     @Autowired private EmployeeService empService;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Employee getEmployeeById(@PathVariable String id){
+    public Employee getEmployeeById(@PathVariable int id){
         return empService.getEmployeeById(id);
     }
 
@@ -32,10 +32,10 @@ public class EmployeeController {
             method = RequestMethod.PUT,
             consumes = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public boolean updateEmployeeById(
+    public boolean updateEmployee(
             @RequestBody Employee emp
     ){
-        return empService.updateEmployeeById(emp.id, emp);
+        return empService.addEmployee(emp);
     }
 
     @RequestMapping(
@@ -50,7 +50,7 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public boolean deleteEmployee(@PathVariable String id){
+    public boolean deleteEmployee(@PathVariable int id){
         return empService.deleteEmployee(id);
     }
 }

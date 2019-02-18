@@ -35,9 +35,17 @@ public class EmployeeDao {
         }
     }
 
-    public Employee getById(String id) {
-        List<Employee> filteredList = employeeList.stream().filter(emp -> emp.id.equals(id)).collect(Collectors.toList());
-        return filteredList.get(0);
+    public Employee getById(int id) {
+        try{
+            Session session = sessionFactory.openSession();
+            Transaction tx = session.beginTransaction();
+            Employee employee = (Employee) session.createQuery("FROM Employee where id = " + id).uniqueResult();
+            tx.commit();
+            session.close();
+            return employee;
+        } catch(Exception e) {
+            return null;
+        }
     }
 
     public ArrayList<Employee> getAll() {
@@ -54,26 +62,21 @@ public class EmployeeDao {
     }
 
     public boolean add(Employee emp) {
-        return employeeList.add(emp);
-    }
-
-    public boolean delete(String id){
-        return employeeList.removeIf(emp -> {
-            return id.equals(emp.id);
-        });
-    }
-
-    public boolean updateById(String id, Employee updatedEmp) {
         try{
-            this.employeeList = (ArrayList<Employee>) employeeList.stream().map(emp -> {
-                if(id.equals(emp.id)) {
-                    return updatedEmp;
-                }
-                return emp;
-                }).collect(Collectors.toList());
+            Session session = sessionFactory.openSession();
+            Transaction tx = session.beginTransaction();
+            session.saveOrUpdate(emp);
+            tx.commit();
+            session.close();
             return true;
-        } catch (Exception e) {
+        } catch(Exception e) {
             return false;
         }
+    }
+
+    public boolean delete(int id){
+        return employeeList.removeIf(emp -> {
+            return id == emp.id;
+        });
     }
 }
